@@ -1,0 +1,2144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Beautiful World</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ff9ed6;
+            --secondary-color: #a8e6cf;
+            --accent-color: #ffd93d;
+            --text-color: #333;
+            --bg-color: #fff;
+            --card-bg: #fef9ff;
+            --shadow: 0 10px 30px rgba(255, 158, 214, 0.3);
+            --gradient: linear-gradient(135deg, #ff9ed6 0%, #a8e6cf 100%);
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #d678b3;
+            --secondary-color: #7bc4a8;
+            --accent-color: #f5d020;
+            --text-color: #e0e0e0;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --shadow: 0 10px 30px rgba(214, 120, 179, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            overflow-x: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] .navbar {
+            background: rgba(26, 26, 46, 0.9);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .mobile-menu span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary-color);
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        .section {
+            min-height: 100vh;
+            padding: 6rem 2rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero {
+            background: var(--gradient);
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="hearts" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><text x="10" y="15" text-anchor="middle" fill="rgba(255,255,255,0.1)" font-size="12">♥</text></pattern></defs><rect width="100" height="100" fill="url(%23hearts)"/></svg>');
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateX(-50px) translateY(-50px);
+            }
+
+            100% {
+                transform: translateX(50px) translateY(50px);
+            }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.3s both;
+        }
+
+        .hero .quote {
+            font-size: 1.2rem;
+            font-style: italic;
+            margin-bottom: 3rem;
+            opacity: 0.8;
+            animation: fadeInUp 1s ease 0.6s both;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateX(-50%) translateY(0);
+            }
+
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--primary-color);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--gradient);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin: 2rem 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            width: 45%;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-5px);
+        }
+
+        .timeline-date {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 158, 214, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        .letters-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 3rem;
+            box-shadow: var(--shadow);
+            font-family: 'Courier New', monospace;
+        }
+
+        .letter {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            border-left: 4px solid var(--primary-color);
+            background: rgba(255, 158, 214, 0.1);
+            border-radius: 0 15px 15px 0;
+        }
+
+        .letter h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .reasons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .reason-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reason-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(255, 158, 214, 0.4);
+        }
+
+        .reason-card::before {
+            content: '♥';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            font-size: 3rem;
+            color: var(--primary-color);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .reason-card:hover::before {
+            opacity: 0.3;
+            top: -10px;
+            right: -10px;
+        }
+
+        .playlist-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .song-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: rgba(255, 158, 214, 0.1);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .song-item:hover {
+            background: rgba(255, 158, 214, 0.2);
+            transform: translateX(10px);
+        }
+
+        .song-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-right: 1rem;
+        }
+
+        .bucket-list {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .bucket-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .bucket-item:hover {
+            transform: translateX(10px);
+        }
+
+        .bucket-checkbox {
+            margin-right: 1rem;
+            transform: scale(1.5);
+            accent-color: var(--primary-color);
+        }
+
+        .photo-slideshow {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .slide {
+            display: none;
+            position: relative;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+
+        .slide-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .slide-controls {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 158, 214, 0.8);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .slide-controls:hover {
+            background: var(--primary-color);
+        }
+
+        .prev {
+            left: 1rem;
+        }
+
+        .next {
+            right: 1rem;
+        }
+
+        .drawing-pad {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .canvas-container {
+            background: white;
+            border-radius: 15px;
+            padding: 1rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        #drawingCanvas {
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+            cursor: crosshair;
+        }
+
+        .drawing-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .drawing-controls button,
+        .drawing-controls input {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--primary-color);
+            border-radius: 25px;
+            background: white;
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .drawing-controls button:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .message-vault {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .message-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .message-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .message-card.locked {
+            opacity: 0.7;
+        }
+
+        .message-card.locked::before {
+            content: '🔒';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .message-content {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(255, 158, 214, 0.1);
+            border-radius: 10px;
+        }
+
+        .message-content.visible {
+            display: block;
+        }
+
+        .daily-quotes {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .quote-card {
+            background: var(--card-bg);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quote-card::before {
+            content: '"';
+            position: absolute;
+            top: -20px;
+            left: 20px;
+            font-size: 8rem;
+            color: var(--primary-color);
+            opacity: 0.3;
+            font-family: serif;
+        }
+
+        .quote-text {
+            font-size: 1.5rem;
+            font-style: italic;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .quote-author {
+            font-size: 1rem;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .quote-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .quote-btn {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .quote-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 158, 214, 0.3);
+        }
+
+        .calendar-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .calendar-nav {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1rem;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .calendar-day:hover {
+            border-color: var(--primary-color);
+            background: rgba(255, 158, 214, 0.1);
+        }
+
+        .calendar-day.has-event {
+            background: var(--gradient);
+            color: white;
+        }
+
+        .calendar-day.today {
+            border-color: var(--accent-color);
+            background: var(--accent-color);
+            color: var(--text-color);
+        }
+
+        .day-header {
+            font-weight: bold;
+            color: var(--primary-color);
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .wish-jar {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .jar-container {
+            position: relative;
+            width: 300px;
+            height: 400px;
+            margin: 2rem auto;
+            background: linear-gradient(180deg, transparent 0%, rgba(255, 158, 214, 0.1) 100%);
+            border: 8px solid var(--primary-color);
+            border-radius: 20px 20px 40px 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 2rem;
+            overflow: hidden;
+        }
+
+        .jar-lid {
+            position: absolute;
+            top: -20px;
+            width: 120%;
+            height: 40px;
+            background: var(--primary-color);
+            border-radius: 20px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .wish-papers {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            height: 60%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 5px;
+        }
+
+        .wish-paper {
+            width: 30px;
+            height: 40px;
+            background: var(--accent-color);
+            border-radius: 5px;
+            opacity: 0.8;
+            animation: float 3s ease-in-out infinite;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .wish-paper:hover {
+            transform: scale(1.1);
+            opacity: 1;
+        }
+
+        .wish-paper:nth-child(even) {
+            animation-delay: 1s;
+            background: var(--secondary-color);
+        }
+
+        .wish-paper:nth-child(3n) {
+            animation-delay: 2s;
+            background: var(--primary-color);
+        }
+
+        .wish-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 1rem;
+            border: 2px solid var(--primary-color);
+            border-radius: 15px;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            background: var(--card-bg);
+            color: var(--text-color);
+        }
+
+        .add-wish-btn {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .add-wish-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 158, 214, 0.3);
+        }
+
+        .wish-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .wish-modal.active {
+            display: flex;
+        }
+
+        .wish-modal-content {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+        }
+
+        .wish-modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        .love-games {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .game-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(255, 158, 214, 0.3);
+        }
+
+        .game-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .memory-game {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            max-width: 400px;
+            margin: 2rem auto;
+        }
+
+        .memory-card {
+            aspect-ratio: 1;
+            background: var(--primary-color);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+        .memory-card.flipped {
+            background: var(--secondary-color);
+            transform: rotateY(180deg);
+        }
+
+        .memory-card.matched {
+            background: var(--accent-color);
+            color: var(--text-color);
+        }
+
+        .trivia-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            text-align: center;
+        }
+
+        .trivia-question {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: rgba(255, 158, 214, 0.1);
+            border-radius: 15px;
+        }
+
+        .trivia-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .trivia-option {
+            padding: 1rem;
+            background: var(--card-bg);
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .trivia-option:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .trivia-option.correct {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .trivia-option.incorrect {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .love-meter {
+            max-width: 400px;
+            margin: 2rem auto;
+            text-align: center;
+        }
+
+        .meter-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 2rem auto;
+            background: conic-gradient(var(--primary-color) 0deg, var(--secondary-color) 360deg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .meter-inner {
+            width: 160px;
+            height: 160px;
+            background: var(--card-bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .weather-widget {
+            max-width: 600px;
+            margin: 2rem auto;
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .weather-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .anniversary-counter {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            background: var(--card-bg);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .counter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .counter-item {
+            background: var(--gradient);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .counter-number {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .counter-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .floating-heart {
+            position: absolute;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            animation: floatUp 4s ease-out forwards;
+        }
+
+        @keyframes floatUp {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(-100vh) scale(0.5);
+            }
+        }
+
+        .parallax-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="stars" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="5" cy="5" r="0.5" fill="rgba(255,158,214,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23stars)"/></svg>');
+            z-index: -1;
+            animation: parallaxMove 30s linear infinite;
+        }
+
+        @keyframes parallaxMove {
+            0% {
+                transform: translateX(0) translateY(0);
+            }
+
+            100% {
+                transform: translateX(-20px) translateY(-20px);
+            }
+        }
+
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 2rem;
+            background: var(--gradient);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            z-index: 1500;
+            transform: translateX(400px);
+            transition: all 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: var(--gradient);
+            z-index: 1001;
+            transition: width 0.3s ease;
+        }
+
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .timeline::before {
+                left: 2rem;
+            }
+
+            .timeline-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .timeline-content {
+                width: 100%;
+                margin-left: 4rem;
+            }
+
+            .timeline-date {
+                left: 2rem;
+                transform: translate(-50%, -50%);
+            }
+
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+
+            .reasons-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .drawing-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            #drawingCanvas {
+                width: 100%;
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo">Our World ♥</a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#timeline">Timeline</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#letters">Letters</a></li>
+                <!-- <li><a href="#reasons">Why I Love You</a></li> -->
+                <li><a href="#playlist">Playlist</a></li>
+                <li><a href="#bucket">Bucket List</a></li>
+                <li><a href="#photos">Photos</a></li>
+                <li><a href="#drawing">Drawing</a></li>
+                <li><a href="#messages">Messages</a></li>
+                <li><a href="#quotes">Daily Quotes</a></li>
+                <!-- <li><a href="#calendar">Our Calendar</a></li> -->
+                <!-- <li><a href="#wishes">Wish Jar</a></li> -->
+            </ul>
+            <button class="theme-toggle" onclick="toggleTheme()">
+                <i class="fas fa-moon"></i>
+            </button>
+            <div class="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="section hero">
+        <div class="hero-content">
+            <h1>Welcome to Our World</h1>
+            <p class="subtitle">Where every moment is a beautiful memory</p>
+            <p class="quote">"Will you be my Piupiu ?" - your's truely</p>
+        </div>
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down" style="font-size: 2rem; color: white;"></i>
+        </div>
+    </section>
+
+    <section id="quotes" class="section">
+        <div class="container">
+            <h2 class="section-title">Daily Love Quotes</h2>
+            <div class="daily-quotes">
+                <div class="quote-card">
+                    <div class="quote-text" id="dailyQuoteText">Loading your daily dose of love...</div>
+                    <div class="quote-author" id="dailyQuoteAuthor">- Love Bot</div>
+                </div>
+                <div class="quote-controls">
+                    <button class="quote-btn" onclick="getNewQuote()">
+                        <i class="fas fa-heart"></i> New Quote
+                    </button>
+                    <button class="quote-btn" onclick="shareQuote()">
+                        <i class="fas fa-share"></i> Share Love
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="calendar" class="section">
+        <div class="container">
+            <h2 class="section-title">Our Love Calendar</h2>
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <button class="calendar-nav" onclick="changeMonth(-1)">❮</button>
+                        <h3 id="currentMonth">January 2025</h3>
+                        <button class="calendar-nav" onclick="changeMonth(1)">❯</button>
+                    </div>
+                    <div class="calendar-grid" id="calendarGrid">
+                    </div>
+                </div>
+                <div class="anniversary-counter">
+                    <h3>Time Together</h3>
+                    <div class="counter-grid">
+                        <div class="counter-item">
+                            <div class="counter-number" id="daysCounter">0</div>
+                            <div class="counter-label">Days</div>
+                        </div>
+                        <div class="counter-item">
+                            <div class="counter-number" id="hoursCounter">0</div>
+                            <div class="counter-label">Hours</div>
+                        </div>
+                        <div class="counter-item">
+                            <div class="counter-number" id="minutesCounter">0</div>
+                            <div class="counter-label">Minutes</div>
+                        </div>
+                        <div class="counter-item">
+                            <div class="counter-number" id="secondsCounter">0</div>
+                            <div class="counter-label">Seconds</div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </section>
+
+    <!-- <section id="wishes" class="section">
+        <div class="container">
+            <h2 class="section-title">Our Wish Jar</h2>
+            <div class="wish-jar">
+                <div class="jar-container">
+                    <div class="jar-lid"></div>
+                    <div class="wish-papers" id="wishPapers">
+                    </div>
+                </div>
+                <input type="text" class="wish-input" id="wishInput" placeholder="Make a wish together...">
+                <button class="add-wish-btn" onclick="addWish()">
+                    <i class="fas fa-star"></i> Add Wish
+                </button>
+                <p>Click on the colored papers to read our wishes!</p>
+            </div>
+        </div>
+    </section> -->
+
+
+    <!-- <div class="wish-modal" id="wishModal">
+        <div class="wish-modal-content">
+            <button class="wish-modal-close" onclick="closeWishModal()">×</button>
+            <h3>💫 Our Wish</h3>
+            <p id="wishContent"></p>
+        </div>
+    </div> -->
+
+    <div class="floating-hearts" id="floatingHearts"></div>
+    <div class="parallax-bg"></div>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="notification" id="notification"></div>
+
+    <section id="timeline" class="section">
+    <div class="container">
+        <h2 class="section-title">Our Timeline of Memories</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3>When Our Worlds First Crossed</h3>
+                    <p>It was Holi—colors flying like dreams. You chased me with pink abir, eyes gleaming with mischief. I was shy, hiding behind mom... but a tiny part of my heart stayed there with you.</p>
+                </div>
+                <div class="timeline-date">Jan 2018</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3>That First Quiet Spark</h3>
+                    <p>You sat there, in a white one-piece that danced with the breeze. Solving matrices like magic spells, you looked ethereal—like the gentle heroine of my favorite anime. That was the moment I knew… you were different.</p>
+                </div>
+                <div class="timeline-date">July 2022</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3>My Heart’s Confession</h3>
+                    <p>You gave me signs, smiles, little nudges from fate. And yet I hesitated, afraid to disturb the fragile magic. But on May 12th, my heart spoke—finally braving the world to ask for yours only to know that u were planning on asking me out first.</p>
+                </div>
+                <div class="timeline-date">May 2023</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3>Our First Chapter Begins</h3>
+                    <p>Through college chaos and life’s messy canvas, we found a quiet moment. That first date felt like a peaceful interlude in a fast-paced episode. Just us, and time gently slowing down.</p>
+                </div>
+                <div class="timeline-date">Jan 2024</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <h3>A Kiss Like Fireworks</h3>
+                    <p>It was Independence Day—but the only freedom I felt was in your arms. During that movie, time paused. Our lips met. Softly. Like a promise whispered under starry skies.</p>
+                </div>
+                <div class="timeline-date">Aug 2024</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+    <section id="photos" class="section">
+        <div class="container">
+            <h2 class="section-title">Our Photo Memories</h2>
+            <div class="photo-slideshow">
+                <div class="slide active">
+                    <img src="10.jpg"
+                        alt="Us Photo">
+                    <div class="slide-caption">Us together - nervous but so happy!</div>
+                </div>
+                <div class="slide">
+                    <img src="1.jpg"
+                        alt="Lake">
+                    <div class="slide-caption">That amazing Lake side moment amidst the drizzling rain</div>
+                </div>
+                <div class="slide">
+                    <img src="2.jpg"
+                        alt="Adventure">
+                    <div class="slide-caption">That Day i ran 4 km to catch up with you - it was worth every step</div>
+                </div>
+                </div>
+                <div class="slide">
+                    <img src="7.jpg"
+                        alt="Anniversary Dinner">
+                    <div class="slide-caption">Our anniversary date - you wore that beautiful dress that took my
+                        breath away</div>
+                </div>
+                <div class="slide">
+                    <img src="9.jpg" alt="smile">
+                    <div class="slide-caption">The smile on your face - Made my day</div>
+                    </div>
+                </div>
+                <button class="slide-controls prev" onclick="changeSlide(-1)">❮</button>
+                <button class="slide-controls next" onclick="changeSlide(1)">❯</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="letters" class="section">
+        <div class="container">
+            <h2 class="section-title">Letters to Each Other</h2>
+            <div class="letters-container">
+                <div class="letter">
+                    <h3>My Dearest Love,</h3>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit tempora obcaecati iusto voluptatibus ducimus provident quisquam repellat neque est natus! Eius quasi ducimus quam architecto beatae voluptate, veritatis pariatur recusandae.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Id aut, facere, magni inventore commodi veritatis a et, earum eaque ipsam quia minima assumenda neque! Quod quis saepe iste dolorum ullam.</p>
+                    <p>Forever yours,<br>Your devoted admirer ♥</p>
+                </div>
+                <div class="letter">
+                    <h3>To My Heart,</h3>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius officiis ratione dolorum. At necessitatibus numquam amet. Quod sapiente facilis blanditiis officiis fuga deserunt? Quia quam eligendi eum officia explicabo dolorum.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio itaque nostrum asperiores illo aliquam autem sequi nam. Ut amet itaque, quas sapiente rerum dignissimos nisi, dolorem aliquam sunt odio eius.</p>
+                    <p>With all my love,<br>Your forever companion ♥</p>
+                </div>
+                <div class="letter">
+                    <h3>My Beautiful Artist,</h3>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa, soluta. Ad optio qui perferendis sequi. Architecto sint, nulla in maiores dolorum quaerat velit asperiores, est sit veritatis molestiae error nostrum.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nostrum quaerat debitis vitae, dolorem suscipit officiis accusamus illo laboriosam, tempore assumenda corrupti. Aliquam aliquid at eos, voluptates libero odit error obcaecati..</p>
+                    <p>Your biggest fan,<br>The one who loves you most ♥</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="reasons" class="section">
+    <div class="container">
+        <h2 class="section-title">Why I Love You</h2>
+        <div class="reasons-grid">
+            <div class="reason-card">
+                <i class="fas fa-hand-holding-heart"
+                    style="font-size: 2rem; color: var(--primary-color); margin-bottom: 1rem;"></i>
+                <h3>You’re My Safe Space</h3>
+                <p>When everything falls apart, I know I can fall into you. You hold me when I’m breaking, even from miles away.</p>
+            </div>
+            <div class="reason-card">
+                <i class="fas fa-hands"
+                    style="font-size: 2rem; color: var(--primary-color); margin-bottom: 1rem;"></i>
+                <h3>Your Hugs Heal</h3>
+                <p>Just one hug from you — even a virtual one — is enough to make the world feel okay again.</p>
+            </div>
+            <div class="reason-card">
+                <i class="fas fa-cloud-sun-rain"
+                    style="font-size: 2rem; color: var(--primary-color); margin-bottom: 1rem;"></i>
+                <h3>The Way You Handle Me</h3>
+                <p>You understand my storms and never try to fix them — you just stay beside me until they pass.</p>
+            </div>
+            <div class="reason-card">
+                <i class="fas fa-gift"
+                    style="font-size: 2rem; color: var(--primary-color); margin-bottom: 1rem;"></i>
+                <h3>The Little Things You Do</h3>
+                <p>Your surprise cards, the soft reminders, your care — they stay with me long after the moment’s gone.</p>
+            </div>
+            <div class="reason-card">
+                <i class="fas fa-eye"
+                    style="font-size: 2rem; color: var(--primary-color); margin-bottom: 1rem;"></i>
+                <h3>The Moment I First Fell</h3>
+                <p>You looked so focused, so innocent, in that white one-piece solving math — it lives rent-free in my heart.</p>
+            </div>
+            <div class="reason-card">
+                <i class="fas fa-balance-scale"
+                    style="font-size: 2rem; color: var(--primary-color); margin-bottom: 1rem;"></i>
+                <h3>Your Quiet Strength</h3>
+                <p>You’re mature beyond your years. The way you handle life with calmness and grace is something I deeply admire.</p>
+            </div>
+            <div class="reason-card">
+                <i class="fas fa-palette"
+                    style="font-size: 2rem; color: var(--primary-color); margin-bottom: 1rem;"></i>
+                <h3>Your Beautiful Art</h3>
+                <p>To the world it’s just creativity — to me, it’s your heart in color, and it's the most beautiful thing I’ve seen.</p>
+            </div>
+            <div class="reason-card">
+                <i class="fas fa-stethoscope"
+                    style="font-size: 2rem; color: var(--primary-color); margin-bottom: 1rem;"></i>
+                <h3>You Take Care of Me</h3>
+                <p>From nudging me to take meds to reminding me to rest — you love me in the most real and grounding ways.</p>
+            </div>
+            <div class="reason-card">
+                <i class="fas fa-infinity"
+                    style="font-size: 2rem; color: var(--primary-color); margin-bottom: 1rem;"></i>
+                <h3>No Reason Needed</h3>
+                <p>I love you not for a list of things, but because I just do — unconditionally, endlessly, and always.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+    <section id="playlist" class="section">
+    <div class="container">
+        <h2 class="section-title">Our Shared Playlist</h2>
+        <div class="playlist-container">
+            <div class="song-item">
+                <i class="fas fa-moon song-icon"></i>
+                <div>
+                    <h3>Rises the Moon by Liana Flores</h3>
+                    <p>When things feel heavy, this song reminds me how even the darkest nights give way to light.</p>
+                </div>
+            </div>
+            <div class="song-item">
+                <i class="fas fa-heartbeat song-icon"></i>
+                <div>
+                    <h3>Another Love by Tom Odell</h3>
+                    <p>I’d give you every part of me, even the ones that have been hurt before.</p>
+                </div>
+            </div>
+            <div class="song-item">
+                <i class="fas fa-crow song-icon"></i>
+                <div>
+                    <h3>Two Birds by Regina Spektor</h3>
+                    <p>Like those birds, sometimes we fly apart—but we always find our way back.</p>
+                </div>
+            </div>
+            <div class="song-item">
+                <i class="fas fa-cloud-sun song-icon"></i>
+                <div>
+                    <h3>Summertime Sadness by Lana Del Rey</h3>
+                    <p>Even the sadness feels poetic when I'm with you.</p>
+                </div>
+            </div>
+            <div class="song-item">
+                <i class="fas fa-water song-icon"></i>
+                <div>
+                    <h3>Atlantis by Seafret</h3>
+                    <p>I lose myself in your depths—like a beautiful, forgotten city under the waves.</p>
+                </div>
+            </div>
+            <div class="song-item">
+                <i class="fas fa-bug song-icon"></i>
+                <div>
+                    <h3>Numb Little Bug by Em Beihold</h3>
+                    <p>Some days feel numb—but you always bring me back to life.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+    <section id="bucket" class="section">
+        <div class="container">
+            <h2 class="section-title">Our Bucket List</h2>
+            <div class="bucket-list">
+                <div class="bucket-item">
+                    <input type="checkbox" class="bucket-checkbox" id="art-gallery">
+                    <label for="art-gallery">Have your art displayed in a gallery</label>
+                </div>
+                <div class="bucket-item">
+                    <input type="checkbox" class="bucket-checkbox" id="couples-tattoo">
+                    <label for="couples-tattoo">Get matching clothes</label>
+                </div>
+                <div class="bucket-item">
+                    <input type="checkbox" class="bucket-checkbox" id="camping">
+                    <label for="camping">Go camping in a hillstation and stargaze all night</label>
+                </div>
+                <div class="bucket-item">
+                    <input type="checkbox" class="bucket-checkbox" id="beach-house">
+                    <label for="beach-house">Visit Japan to see the CherryBlossom</label>
+                </div>
+                <div class="bucket-item">
+                    <input type="checkbox" class="bucket-checkbox" id="japan">
+                    <label for="japan">wish 1</label>
+                </div>
+                <div class="bucket-item">
+                    <input type="checkbox" class="bucket-checkbox" id="spirited">
+                    <label for="spirited">wish 2 </label>
+                </div>
+                <div class="bucket-item">
+                    <input type="checkbox" class="bucket-checkbox" id="cooking">
+                    <label for="cooking">wish 3</label>
+                </div>
+                <div class="bucket-item">
+                    <input type="checkbox" class="bucket-checkbox" id="road-trip">
+                    <label for="road-trip">wish 4</label>
+                </div>
+                <div class="bucket-item">
+                    <input type="checkbox" class="bucket-checkbox" id="northern-lights">
+                    <label for="northern-lights">wish 5</label>
+                </div>
+                <div class="bucket-item">
+                    <input type="checkbox" class="bucket-checkbox" id="hot-air-balloon">
+                    <label for="hot-air-balloon">wish 6</label>
+                </div>
+                <div class="bucket-item">
+                    <input type="checkbox" class="bucket-checkbox" id="paris">
+                    <label for="paris">wish 7</label>
+                </div>
+                <div class="bucket-item">
+                    <input type="checkbox" class="bucket-checkbox" id="dance-lessons">
+                    <label for="dance-lessons">wish 8</label>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="gallery" class="section">
+        <div class="container">
+            <h2 class="section-title">Digital Art Gallery</h2>
+            <div class="gallery">
+                <div class="gallery-item"
+                    onclick="openLightbox('https://via.placeholder.com/400x300/ff9ed6/ffffff?text=Portrait+Art')">
+                    <img src="art1.png" alt="Nature Art">
+                    <div class="gallery-overlay">
+                        <span>Deep Thoughts</span>
+                    </div>
+                </div>
+                <div class="gallery-item"
+                    onclick="openLightbox('https://via.placeholder.com/400x300/a8e6cf/ffffff?text=Anime+Art')">
+                    <img src="art2.jpg" alt="Anime Art">
+                    <div class="gallery-overlay">
+                        <span>The Aura</span>
+                    </div>
+                </div>
+                <div class="gallery-item"
+                    onclick="openLightbox('https://via.placeholder.com/400x300/ffd93d/ffffff?text=Nature+Art')">
+                    <img src="art3.jpg" alt="Nature Art">
+                    <div class="gallery-overlay">
+                        <span>The Mysterious Gaze</span>
+                    </div>
+                </div>
+                 <div class="gallery-item"
+                    onclick="openLightbox('https://via.placeholder.com/400x300/ff6b9d/ffffff?text=Abstract+Art')">
+                    <img src="art4.jpg" alt="Abstract Art">
+                    <div class="gallery-overlay">
+                        <span>Death Gaze</span>
+                    </div>
+                </div>
+                <div class="gallery-item"
+                    onclick="openLightbox('https://via.placeholder.com/400x300/95e1d3/ffffff?text=Digital+Art')">
+                    <img src="art5.jpg" alt="Digital Art">
+                    <div class="gallery-overlay">
+                        <span>Spark of Hope</span>
+                    </div>
+                </div>
+                <!-- <div class="gallery-item"
+                    onclick="openLightbox('https://via.placeholder.com/400x300/f38ba8/ffffff?text=Sketch+Art')">
+                    <img src="https://via.placeholder.com/400x300/f38ba8/ffffff?text=Sketch+Art" alt="Sketch Art">
+                    <div class="gallery-overlay">
+                        <span>Sketch Collection</span>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </section>
+
+    <section id="drawing" class="section">
+        <div class="container">
+            <h2 class="section-title">Drawing Pad for You</h2>
+            <div class="drawing-pad">
+                <div class="drawing-controls">
+                    <input type="color" id="colorPicker" value="#ff9ed6">
+                    <input type="range" id="brushSize" min="1" max="20" value="5">
+                    <button onclick="clearCanvas()">Clear Canvas</button>
+                    <button onclick="downloadDrawing()">Download Your Art</button>
+                </div>
+                <div class="canvas-container">
+                    <canvas id="drawingCanvas" width="600" height="400"></canvas>
+                </div>
+                <p>Create something beautiful! I can't wait to see what you draw ♥</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="messages" class="section">
+    <div class="container">
+        <h2 class="section-title">Message Vault</h2>
+        <div class="message-vault">
+
+            <div class="message-card" onclick="toggleMessage('msg1')">
+                <h3>💌 Open When You Miss Me</h3>
+                <p>Click to reveal your heart-hug...</p>
+                <div class="message-content" id="msg1">
+                    <p>Hey love, if you're missing me — just know, I’m missing you just as much. Close your eyes, take a deep breath, and imagine me hugging you tight. We may be far in distance, but you’re never far from me — not even for a second. You're tucked safely in my heart, always.</p>
+                </div>
+            </div>
+
+            <div class="message-card" onclick="toggleMessage('msg2')">
+                <h3>🖤 Open When You're Feeling Low</h3>
+                <p>Click to feel held and heard...</p>
+                <div class="message-content" id="msg2">
+                    <p>My strong, beautiful girl... I know the weight you carry, and I know it can feel unbearable sometimes. Please remember, you never have to carry it alone. I’m always here — to listen, to hold, to sit in the silence with you. You don’t have to hide your pain from me. You're not a burden — you’re my person, and I’ll never let go.</p>
+                </div>
+            </div>
+
+            <div class="message-card" onclick="toggleMessage('msg3')">
+                <h3>🎨 Open When You're Creatively Blocked</h3>
+                <p>Click to unlock your magic...</p>
+                <div class="message-content" id="msg3">
+                    <p>My artist — your art has saved you and moved me in ways words can’t describe. It’s okay if inspiration feels distant right now. Even stillness is part of creation. Your hands hold stories, emotions, galaxies. Trust them. Don’t force anything. Just feel. Breathe. Paint. Scribble. You’re art — even when you're unsure of it.</p>
+                </div>
+            </div>
+
+            <div class="message-card" onclick="toggleMessage('msg4')">
+                <h3>🌙 Open Before You Sleep</h3>
+                <p>Click for a soft bedtime whisper...</p>
+                <div class="message-content" id="msg4">
+                    <p>Close your eyes, my piupiu. You’ve survived the day, and that’s enough. Let my love wrap around you like a blanket tonight. If your thoughts run wild, let them. I’m here. I’ll always be here — in the quiet of your night, in the steady beat of your heart. Sleep peacefully. You’re never alone. Never .. i'm in your heart.</p>
+                </div>
+            </div>
+
+            <div class="message-card" onclick="toggleMessage('msg5')">
+                <h3>🎉 Open When You Accomplish Something Big (or Small)</h3>
+                <p>Click for a proud, beaming me...</p>
+                <div class="message-content" id="msg5">
+                    <p>YESSS! Look at you go! Whether it’s something huge or just getting out of bed today — I see your effort. I see your courage. And I’m so damn proud of you. Every little step you take inspires me. You shine, even when you don’t feel it. And I’ll always be cheering you on, front row, heart wide open.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" onclick="closeLightbox()">×</button>
+        <img id="lightboxImage" src="" alt="Gallery Image">
+    </div>
+
+    <script>
+        // Theme Toggle
+        function toggleTheme() {
+            const body = document.body;
+            const themeToggle = document.querySelector('.theme-toggle i');
+
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                themeToggle.className = 'fas fa-moon';
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeToggle.className = 'fas fa-sun';
+            }
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Photo slideshow
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        // Auto-advance slideshow
+        setInterval(() => {
+            changeSlide(1);
+        }, 5000);
+
+        // Drawing pad functionality
+        const canvas = document.getElementById('drawingCanvas');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+        let currentColor = '#ff9ed6';
+        let currentSize = 5;
+
+        const colorPicker = document.getElementById('colorPicker');
+        const brushSize = document.getElementById('brushSize');
+
+        colorPicker.addEventListener('change', (e) => {
+            currentColor = e.target.value;
+        });
+
+        brushSize.addEventListener('change', (e) => {
+            currentSize = e.target.value;
+        });
+
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+
+        // Touch events for mobile
+        canvas.addEventListener('touchstart', handleTouch);
+        canvas.addEventListener('touchmove', handleTouch);
+        canvas.addEventListener('touchend', stopDrawing);
+
+        function startDrawing(e) {
+            isDrawing = true;
+            draw(e);
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            ctx.lineWidth = currentSize;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = currentColor;
+
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+
+        function stopDrawing() {
+            if (!isDrawing) return;
+            isDrawing = false;
+            ctx.beginPath();
+        }
+
+        function handleTouch(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent(e.type === 'touchstart' ? 'mousedown' :
+                e.type === 'touchmove' ? 'mousemove' : 'mouseup', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            canvas.dispatchEvent(mouseEvent);
+        }
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function downloadDrawing() {
+            const link = document.createElement('a');
+            link.download = 'your-beautiful-art.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+        // Message vault functionality
+        function toggleMessage(messageId) {
+            const message = document.getElementById(messageId);
+            const card = message.closest('.message-card');
+
+            if (message.classList.contains('visible')) {
+                message.classList.remove('visible');
+                card.classList.add('locked');
+            } else {
+                message.classList.add('visible');
+                card.classList.remove('locked');
+            }
+        }
+
+        // Lightbox functionality
+        function openLightbox(imageSrc) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.getElementById('lightboxImage');
+            lightboxImage.src = imageSrc;
+            lightbox.classList.add('active');
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+        }
+
+        // Close lightbox when clicking outside the image
+        document.getElementById('lightbox').addEventListener('click', function (e) {
+            if (e.target === this) {
+                closeLightbox();
+            }
+        });
+
+        // Animations on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections for animation
+        document.querySelectorAll('.section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu').addEventListener('click', function () {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+        });
+
+        // Heart animation on hover for reason cards
+        document.querySelectorAll('.reason-card').forEach(card => {
+            card.addEventListener('mouseenter', function () {
+                // Create floating hearts
+                for (let i = 0; i < 3; i++) {
+                    setTimeout(() => {
+                        createFloatingHeart(this);
+                    }, i * 100);
+                }
+            });
+        });
+
+        function createFloatingHeart(element) {
+            const heart = document.createElement('span');
+            heart.innerHTML = '♥';
+            heart.style.position = 'absolute';
+            heart.style.color = 'var(--primary-color)';
+            heart.style.fontSize = '1.5rem';
+            heart.style.pointerEvents = 'none';
+            heart.style.zIndex = '1000';
+            heart.style.opacity = '0';
+
+            const rect = element.getBoundingClientRect();
+            heart.style.left = (rect.left + Math.random() * rect.width) + 'px';
+            heart.style.top = (rect.top + Math.random() * rect.height) + 'px';
+
+            document.body.appendChild(heart);
+
+            // Animate the heart
+            heart.style.transition = 'all 2s ease-out';
+            heart.style.opacity = '1';
+
+            setTimeout(() => {
+                heart.style.transform = 'translateY(-50px)';
+                heart.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(heart);
+                }, 2000);
+            }, 100);
+        }
+
+        // Initialize canvas
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+
+
+        // Calendar functionality
+        let currentDate = new Date();
+        let anniversaryDate = new Date('2023-05-12'); // Set your anniversary date here
+
+        // Month names
+        const monthNames = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+
+        // Initialize calendar
+        function initCalendar() {
+            renderCalendar();
+            startCounter();
+        }
+
+        // Render calendar
+        function renderCalendar() {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+
+            // Update month header
+            document.getElementById('currentMonth').textContent = `${monthNames[month]} ${year}`;
+
+            // Get first day of month and number of days
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            // Create calendar grid
+            const calendarGrid = document.getElementById('calendarGrid');
+            calendarGrid.innerHTML = '';
+
+            // Add day headers
+            const dayHeaders = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            dayHeaders.forEach(day => {
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'calendar-day-header';
+                dayHeader.textContent = day;
+                calendarGrid.appendChild(dayHeader);
+            });
+
+            // Add empty cells for days before month starts
+            for (let i = 0; i < firstDay; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.className = 'calendar-day empty';
+                calendarGrid.appendChild(emptyDay);
+            }
+
+            // Add days of the month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+                dayElement.textContent = day;
+
+                // Check if this is today
+                const today = new Date();
+                if (year === today.getFullYear() &&
+                    month === today.getMonth() &&
+                    day === today.getDate()) {
+                    dayElement.classList.add('today');
+                }
+
+                // Check if this is anniversary date
+                if (year === anniversaryDate.getFullYear() &&
+                    month === anniversaryDate.getMonth() &&
+                    day === anniversaryDate.getDate()) {
+                    dayElement.classList.add('anniversary');
+                    dayElement.innerHTML = `${day}<br><span class="anniversary-text">💕</span>`;
+                }
+
+                // Check for monthly anniversaries
+                if (day === anniversaryDate.getDate()) {
+                    dayElement.classList.add('monthly-anniversary');
+                    if (!(year === anniversaryDate.getFullYear() && month === anniversaryDate.getMonth())) {
+                        dayElement.innerHTML = `${day}<br><span class="monthly-text">❤️</span>`;
+                    }
+                }
+
+                calendarGrid.appendChild(dayElement);
+            }
+        }
+
+        // Change month
+        function changeMonth(direction) {
+            currentDate.setMonth(currentDate.getMonth() + direction);
+            renderCalendar();
+        }
+
+        // Start the anniversary counter
+        function startCounter() {
+            function updateCounter() {
+                const now = new Date();
+                const timeDiff = now - anniversaryDate;
+
+                const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+
+                document.getElementById('daysCounter').textContent = days;
+                document.getElementById('hoursCounter').textContent = hours;
+                document.getElementById('minutesCounter').textContent = minutes;
+                document.getElementById('secondsCounter').textContent = seconds;
+            }
+
+            updateCounter();
+            setInterval(updateCounter, 1000);
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', initCalendar);
+
+        // Make changeMonth function globally available
+        window.changeMonth = changeMonth;
+    </script>
+</body>
+
+</html>
